@@ -6,9 +6,10 @@ Bash para eliminar terraform.
 
 # api-python
 
-/square: message —>  number: X, square: Y, donde Y es el cuadrado de X. Se espera un response con el cuadrado.
+/square: message —>  number: X, square: Y
 
-/greetings “Hello World from $HOSTNAME”
+/greetings “Hello World" 
+$HOSTNAME
 
 Se implemento bash para levantar la imagen docker.
 
