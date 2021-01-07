@@ -1,0 +1,45 @@
+---
+- name: set timezone to Europe/Amsterdam
+  timezone:
+    name: Europe/Amsterdam
+
+- name: Install epel-release
+  yum: name=epel-release state=present
+
+- name: install packages
+  yum: name={{ item }} state=present
+  with_items:
+    - nano
+    - screen
+    - java
+    - nginx
+    - git
+    - yum-utils
+#    - device-mapper-persistent-data
+#    - lvm2
+    - htop
+    - ncdu
+
+- name: Add the Docker repository
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+- name: yum-clean-metadata
+  command: yum clean metadata
+  args:
+    warn: no
+
+- name: install Docker
+  yum: name=docker-ce state=present
+
+- file:
+    path: /etc/docker
+    state: directory
+
+- copy:
+    src: templates/daemon.json
+    dest: /etc/docker/daemon.json
+
+- command: systemctl start docker
+

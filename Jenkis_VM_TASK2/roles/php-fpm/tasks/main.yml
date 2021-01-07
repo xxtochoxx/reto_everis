@@ -1,0 +1,46 @@
+---
+
+- name: Add repo
+  yum: name={{ item }}
+  with_items:
+    - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    - https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+- name: install php-fpm
+  yum: name={{ item }} state=present
+  with_items:
+    - mcrypt
+    - mod_php72w
+    - php72w-cli
+    - php72w-curl
+    - php72w-fpm
+    - php72w-intl
+    - php72w-json
+    - php72w-dom
+    - php72w-pdo
+    - php72w-sqlite3
+    - php72w-mbstring
+    - php72w-common
+    - php72w-gd
+    - php72w-mysqlnd
+    - php72w-xml
+    - php72w-opcache
+
+- name: ensure php72w-fpm cgi.fix_pathinfo=0
+  lineinfile: dest='{{item}}' regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+  with_items:
+    - /etc/php.ini
+  notify:
+    - restart php-fpm
+    - restart nginx
+
+#- name: enable php72w modules
+#  shell: phpenmod {{ item }}
+#  args:
+#    creates: /etc/php/7.2/cli/conf.d/20-mcrypt.ini
+#  notify: restart php-fpm
+#  with_items:
+#    - mcrypt
+#    - dom
+#    - mbstring
+#    - xdebug

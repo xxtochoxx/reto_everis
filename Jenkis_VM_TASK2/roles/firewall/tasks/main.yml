@@ -1,0 +1,12 @@
+---
+- name: Enable firewalld
+  service: name=firewalld state=restarted enabled=yes
+
+- name: Allow http/https
+  command: firewall-cmd --zone=public  --permanent --add-service=http --add-service=https
+
+- name: Reload firewall
+  command: firewall-cmd --reload
+
+- name: Allow internal traffic
+  shell: setsebool -P httpd_can_network_connect 1

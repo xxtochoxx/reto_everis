@@ -1,0 +1,15 @@
+---
+- name: Install
+  hosts: all
+  become: yes
+  become_method: sudo
+
+  roles:
+    - common
+    - jenkins
+    - permissions
+    - nginx
+    - php-fpm
+    - composer
+    - firewall
+    - password

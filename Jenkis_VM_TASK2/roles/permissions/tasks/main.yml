@@ -1,0 +1,16 @@
+---
+- name: Adding user jenkins to group docker
+  user: name=jenkins
+        group=docker
+        append=yes
+
+- name: Check that the docker.dock exists
+  stat:
+    path: /var/run/docker.dock
+  register: docker_dock_exists
+
+- name: Set the correct permissions on the Docker socket
+  file:
+    path: /var/run/docker.dock
+    mode: 0777
+  when: docker_dock_exists == true
